@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Golf Highlights & History</title>
+  <link rel="stylesheet" href="styles/scratch.css">
+  <style>
+    .hero{padding:18px 0}
+    /* Thumbnail grid for highlights: 3 columns x 2 rows, responsive */
+    .thumb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+    .thumb-grid figure{margin:0;display:flex;flex-direction:column;align-items:center}
+    .thumb-grid img{width:100%;height:220px;object-fit:contain;background:#f0f0f0;border-radius:8px;display:block}
+    .thumb-grid figcaption{font-size:14px;font-weight:500;color:#333;text-align:center;padding:10px 0;width:100%}
+    @media (max-width:900px){
+      .thumb-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+      .thumb-grid img{height:200px}
+    }
+    @media (max-width:600px){
+      .thumb-grid{grid-template-columns:1fr;gap:12px}
+      .thumb-grid img{height:180px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>Golf Highlights & History</h1>
+      <nav>
+        <a href="index.html">Back to Home Page</a>
+      </nav>
+    </header>
+
+    <main class="content">
+      <section class="left">
+        <div class="hero">
+          <p>6 Grand Slam Champions in Golf History</p>
+        </div>
+
+        <div class="thumb-grid panel" aria-label="Golf champions thumbnails">
+          <figure>
+            <img src="image/BenHogan.jpg" alt="Golfer Ben Hogan" />
+            <figcaption>Ben Hogan</figcaption>
+          </figure>
+          <figure>
+            <img src="image/TigerWoods.jpg" alt="Golfer Tiger Woods" />
+            <figcaption>Tiger Woods</figcaption>
+          </figure>
+          <figure>
+            <img src="image/GaryPlayer.jpg" alt="Golfer Gary Player" />
+            <figcaption>Gary Player</figcaption>
+          </figure>
+          <figure>
+            <img src="image/RoryMcilroy.webp" alt="Golfer Rory McIlroy" />
+            <figcaption>Rory McIlroy</figcaption>
+          </figure>
+          <figure>
+            <img src="image/JackNicklaus.jpg" alt="Jack Nicklaus mid-swing on a golf course, wearing a dark polo shirt and plaid pants, with spectators blurred in the background. His focused expression and body position demonstrate the precision of his golf technique." />
+            <figcaption>Jack Nicklaus</figcaption>
+          </figure>
+          <figure>
+            <img src="image/GeneSarazen.jpg" alt="Golfer Gene Sarazen" />
+            <figcaption>Gene Sarazen</figcaption>
+          </figure>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <p><a href="#top">Back to top</a></p>
+</body>
+</html>

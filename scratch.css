@@ -1,0 +1,78 @@
+/* Basic page layout and custom styles for the scratch page */
+
+
+:root{
+  --bg:#f6fbf4;
+  --accent:#2e7d32; /* golf green */
+  --muted:#2f3a2f;
+  --card:#ffffffdd;
+}
+
+body{
+  margin:0;
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  color:var(--muted);
+  background: linear-gradient(180deg,#f6fbf4 0%, #eef7ea 60%), url('https://images.unsplash.com/photo-1502877338535-766e1452684a?w=1600&q=80&auto=format&fit=crop') no-repeat right bottom fixed;
+  background-size: cover;
+}
+
+.page{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px;
+  background: rgba(255,255,255,0.85);
+  box-shadow:0 4px 18px rgba(0,0,0,0.08);
+}
+
+.header{padding:10px 0; display:flex; justify-content:space-between; align-items:center}
+.header h1{margin:0; color:var(--accent); font-family: 'Merriweather', 'Georgia', serif}
+.header nav a{margin-left:12px; color:var(--accent); text-decoration:none}
+
+.hero{padding:10px 0;}
+.hero p{margin:0; font-size:1.05rem}
+
+.content{display:flex; gap:20px; margin-top:16px}
+.left{flex:2}
+.right{flex:1}
+
+
+.photo-block{background:linear-gradient(180deg,#ffffff,#f6fff3); padding:12px; border-radius:8px; border:1px solid #e3f1df; margin:12px auto; max-width:800px}
+.photo-block img{max-width:100%; height:auto; display:block; border-radius:6px}
+.caption{font-size:0.9rem; color:#4a5a46; text-align:center}
+
+.video-wrap{background:#f2fbf6; padding:8px; border-radius:6px}
+.video-wrap iframe{width:100%; height:315px}
+
+.tableau-wrap{margin-top:12px; border-radius:6px; overflow:hidden}
+.tableau-wrap iframe{border:0; display:block}
+
+.footer{margin-top:20px; padding:10px 0; font-size:0.9rem; color:#666}
+
+/* Booking form styles */
+.booking{background:var(--card); padding:18px; border-radius:8px; margin-top:18px}
+.booking input, .booking select{width:100%; padding:8px; margin:6px 0 12px 0; border:1px solid #dfe7de; border-radius:4px}
+.booking button{background:var(--accent); color:#fff; padding:10px 14px; border:none; border-radius:6px; cursor:pointer}
+.booking button:hover{opacity:0.95}
+
+/* Search results */
+.results{list-style:none; padding:0; margin:12px 0}
+.results li{background:#fff; border:1px solid #e2efe0; padding:10px; margin-bottom:8px; border-radius:6px}
+.results li strong{color:var(--accent)}
+.results li a{color:var(--accent); text-decoration:underline}
+.error{color:#b00020}
+
+/* small responsive tweak */
+@media (max-width:800px){
+  .content{flex-direction:column}
+  .video-wrap iframe{height:220px}
+}
+
+/* Additional utility styles */
+h2{color:var(--accent)}
+ol ul{margin-top:6px}
+
+/* small responsive tweak */
+@media (max-width:800px){
+  .content{flex-direction:column}
+  .video-wrap iframe{height:220px}
+}

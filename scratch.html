@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Salt Lake Golf & Tee Times</title>
+  <link rel="stylesheet" href="styles/scratch.css">
+</head>
+<body>
+  <div class="page" id="top">
+    <header class="header">
+      <h1>Tee Times & Local Courses</h1>
+      <nav>
+        <a href="index.html">Back to Home Page</a>
+        <a href="#booking">Jump to Booking</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <p>Find nearby Salt Lake courses and request tee times quickly.</p>
+    </div>
+
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-bottom:20px">
+      <div style="flex:1;min-width:300px">
+        <div class="photo-block">
+          <img src="image/SwingSequence.avif" alt="Golf swing sequence" />
+        </div>
+        
+        <h3 style="font-size:1.4em">How to Book a Tee Time</h3>
+        <ol style="font-size:1.1em">
+          <li>Choose a date and preferred time</li>
+          <li>Specify Number of Players</li>
+          <li>Enter in Radius (miles)</li>
+          <li>Click Search Courses</li>
+           <ul>
+              <li>Scroll through booking times</li>
+              <li>Advance to their websites to confirm booking</li>
+            </ul>
+        </ol>
+      </div>
+      
+      <div style="flex:1;min-width:400px">
+        <h3 style="font-size:1.4em;margin-top:0">PGA Pro Money Leaders</h3>
+        <div class='tableauPlaceholder' id='viz1765246960863' style='position: relative;'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;WC&#47;WCCSYTPWS&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;WCCSYTPWS' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;WC&#47;WCCSYTPWS&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1765246960863');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.minWidth='420px';vizElement.style.maxWidth='100%';vizElement.style.minHeight='610px';vizElement.style.maxHeight=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.minWidth='420px';vizElement.style.maxWidth='100%';vizElement.style.minHeight='610px';vizElement.style.maxHeight=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*1.77)+'px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+      </div>
+    </div>
+
+    </main>
+
+    
+  
+  <!-- Booking form modal/section -->
+  <div id="booking" class="booking">
+    <h3>Find Available Tee Times</h3>
+    <form id="bookingForm">
+      <label>Date & Time:<br><input type="datetime-local" name="datetime" required></label><br>
+      <label>Players:<br><input type="number" name="players" min="1" max="8" value="2" required></label><br>
+      <label>Radius (miles):<br>
+        <select name="radius">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+        </select>
+      </label><br>
+      <button type="submit">Search Courses</button>
+    </form>
+    <p>Or search nearby courses manually: <a href="https://www.google.com/maps/search/golf+courses+Salt+Lake+City" target="_blank" rel="noopener">Google Maps — Golf Courses in Salt Lake City</a></p>
+    
+    <div style="margin: 20px 0; max-width: 800px;">
+      <iframe width="100%" height="450" src="https://www.youtube.com/embed/qNkvdxsMduc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    
+    <div id="bookingResult" aria-live="polite"></div>
+  </div>
+
+  <p><a href="#top">Back to top</a></p>
+      </section>
+
+  <script>
+    // Simple client-side mock search engine.
+    // Each course has a name, site, maxPlayers, and availableSlots (times of day).
+    const courses = [
+      { name: 'Bonneville Golf Course', site: 'https://www.bonnevillegolf.com', maxPlayers: 4, slots: ['07:30','08:00','09:00','11:00','13:00','15:00'] },
+      { name: 'Forest Dale Golf Course', site: 'https://www.provo.org/415/Forest-Dale-Golf-Course', maxPlayers: 4, slots: ['08:00','09:30','10:00','12:00','14:00'] },
+      { name: 'Mountain View Golf Course', site: 'https://www.saltlakecity.gov', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','14:00','16:00'] },
+      { name: 'Nibley Park Golf Course', site: 'https://www.slc.gov/golf/nibley-park', maxPlayers: 4, slots: ['07:00','08:00','09:30','11:00','13:30','15:00'] },
+      { name: 'Old Mill Golf Course', site: 'https://www.oldmillgolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','15:30'] },
+      { name: 'Glendale Golf Course', site: 'https://www.slc.gov/golf/glendale', maxPlayers: 4, slots: ['08:00','09:00','10:30','12:30','14:00','16:00'] },
+      { name: 'Rose Park Golf Course', site: 'https://www.slc.gov/golf/rose-park', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','13:00','15:00'] },
+      { name: 'Wingpointe Golf Course', site: 'https://www.wingpointegolf.com', maxPlayers: 4, slots: ['07:30','09:00','11:00','13:00','14:30','16:00'] },
+      { name: 'Riverbend Golf Course', site: 'https://www.riverbendgc.com', maxPlayers: 4, slots: ['08:00','09:30','11:00','12:30','14:00','15:30'] },
+      { name: 'The Barn Golf Club', site: 'https://www.thebarngolfclub.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','12:00','14:00','15:30'] },
+      { name: 'Bountiful Ridge Golf Course', site: 'https://www.bountifulridgegolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','13:30','15:00'] },
+      { name: 'Meadowbrook Golf Course', site: 'https://www.meadowbrookgc.com', maxPlayers: 4, slots: ['08:00','09:30','11:00','12:30','14:30','16:00'] },
+      { name: 'Stonebridge Golf Club', site: 'https://www.stonebridgegolf.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','13:30','15:30'] },
+      { name: 'Eaglewood Golf Course', site: 'https://www.eaglewoodgolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','15:30'] },
+      { name: 'South Mountain Golf Course', site: 'https://www.southmountaingolf.com', maxPlayers: 4, slots: ['08:00','09:00','10:30','12:00','13:30','15:00'] },
+      { name: 'Jordan River Golf Course', site: 'https://www.slco.org/jordan-river-golf', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','14:00','16:00'] },
+      { name: 'Davis Park Golf Course', site: 'https://www.daviscountyutah.gov/golf', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','15:30'] },
+      { name: 'Oakridge Country Club', site: 'https://www.oakridgecc.com', maxPlayers: 4, slots: ['08:00','09:30','11:00','12:30','14:00','16:00'] },
+      { name: 'Sleepy Ridge Golf Course', site: 'https://www.sleepyridge.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','13:00','15:00'] },
+      { name: 'Fox Hollow Golf Course', site: 'https://www.foxhollowgolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','15:30'] },
+      { name: 'Lakeview Golf Course', site: 'https://www.lakeviewgc.com', maxPlayers: 4, slots: ['08:00','09:30','11:00','12:30','14:30','16:00'] },
+      { name: 'Soldier Hollow Golf Course', site: 'https://www.soldierhollow.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','12:00','13:30','15:30'] },
+      { name: 'Tri-City Golf Course', site: 'https://www.tri-citygolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','16:00'] },
+      { name: 'The Ranches Golf Club', site: 'https://www.theranchesgc.com', maxPlayers: 4, slots: ['08:00','09:30','11:00','12:30','14:00','15:30'] },
+      { name: 'West Ridge Golf Course', site: 'https://www.westridgegolf.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','13:30','15:00'] },
+      { name: 'Glenmoor Golf Course', site: 'https://www.glenmoorgolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:00','16:00'] },
+      { name: 'Murray Parkway Golf Course', site: 'https://www.murray.utah.gov/golf', maxPlayers: 4, slots: ['08:00','09:00','10:30','12:30','14:00','15:30'] },
+      { name: 'Salt Lake Country Club', site: 'https://www.slcc.org', maxPlayers: 4, slots: ['07:30','09:00','11:00','12:30','14:00','15:30'] },
+      { name: 'Canyon Lakes Golf Course', site: 'https://www.canyonlakesgolf.com', maxPlayers: 4, slots: ['07:00','08:30','10:00','11:30','13:00','15:00'] },
+      { name: 'Sunset View Golf Course', site: 'https://www.sunsetviewgolf.com', maxPlayers: 4, slots: ['07:30','09:00','10:30','12:00','14:30','16:00'] },
+      { name: 'City Creek Links', site: 'https://www.citycreekgolf.example', maxPlayers: 6, slots: ['09:00','10:00','12:00','13:00','15:00'] }
+    ];
+
+    function findNearbyMock(radiusMiles){
+      // In this mock, radius does not change results — placeholder for backend/location logic
+      return courses;
+    }
+
+    // Compare requested time to slot time (HH:MM). Return true if within +/-60 minutes.
+    function timeWithinRange(requestTimeStr, slotStr){
+      // requestTimeStr is like '2025-12-08T09:30'
+      const req = new Date(requestTimeStr);
+      if (isNaN(req)) return false;
+      const [h,s] = slotStr.split(':');
+      const slot = new Date(req);
+      slot.setHours(parseInt(h,10), parseInt(s,10),0,0);
+      const diffMin = Math.abs((req - slot) / 60000);
+      return diffMin <= 60; // within 60 minutes
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const data = new FormData(e.target);
+      const datetime = data.get('datetime');
+      const players = parseInt(data.get('players'),10) || 1;
+      const radius = parseInt(data.get('radius'),10) || 10;
+      const result = document.getElementById('bookingResult');
+      result.innerHTML = '';
+
+      if(!datetime){
+        result.innerHTML = '<p class="error">Please choose a date and time.</p>';
+        return;
+      }
+
+      const nearby = findNearbyMock(radius);
+      const matches = [];
+      nearby.forEach(course => {
+        if(players > course.maxPlayers) return; // can't accommodate
+        for(const slot of course.slots){
+          if(timeWithinRange(datetime, slot)){
+            matches.push({ course, matchedSlot: slot });
+            break;
+          }
+        }
+      });
+
+      if(matches.length === 0){
+        result.innerHTML = '<p>No matches found. Try expanding your radius or a different time.</p><p><a href="https://www.google.com/maps/search/golf+courses+Salt+Lake+City" target="_blank" rel="noopener">Search courses on Google Maps</a></p>';
+        return;
+      }
+
+      const ul = document.createElement('ul');
+      ul.className = 'results';
+      matches.forEach(m => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${m.course.name}</strong> — available around <em>${m.matchedSlot}</em> — <span>Max players: ${m.course.maxPlayers}</span> — <a href="${m.course.site}" target="_blank" rel="noopener">Visit course site</a>`;
+        ul.appendChild(li);
+      });
+      result.appendChild(ul);
+    });
+  </script>
+  </div>
+</body>
+</html>

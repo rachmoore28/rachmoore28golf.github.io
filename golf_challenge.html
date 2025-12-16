@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Par Challenge — Mini Golf Simulator</title>
+  <link rel="stylesheet" href="styles/scratch.css">
+  <style>
+    :root{--green:#2e7d32;--muted:#6b6b6b}
+    body{background:linear-gradient(180deg,#f7faf6,#eef7ea);font-family:Inter,system-ui,Arial,sans-serif;color:#222}
+    .wrap{max-width:980px;margin:22px auto;padding:18px}
+    header .header a{margin-left:8px}
+    .panel{background:#fff;border-radius:10px;padding:12px;border:1px solid #e6efe6}
+    .game-top{display:flex;gap:12px;align-items:center}
+    .hole-info{min-width:220px}
+    .controls{flex:1}
+    label{display:block;margin-top:8px;font-size:14px;color:var(--muted)}
+    select,input[type=range]{width:100%;margin-top:6px}
+    button.swing{background:var(--green);color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;margin-top:10px}
+    .log{margin-top:12px;font-size:14px;color:#333;min-height:56px}
+    .scorecard{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+    .scorecard .hole{background:#f6fff6;border-radius:6px;padding:8px;border:1px solid #e6efe6;min-width:90px;text-align:center}
+    .big{font-size:20px;font-weight:600}
+    .status{margin-top:14px;color:var(--muted)}
+    .footer-actions{margin-top:12px;display:flex;gap:8px}
+    @media (max-width:700px){.game-top{flex-direction:column}.hole-info{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap page">
+    <header class="header">
+      <h1>Par Challenge — Mini Golf Simulator</h1>
+      <nav><a href="index.html">Back to Home Page</a></nav>
+    </header>
+
+    <main class="panel">
+      <div class="game-top">
+        <div class="hole-info">
+          <div>Hole: <span id="holeNum" class="big">1</span> / 9</div>
+          <div>Par: <span id="holePar">4</span></div>
+          <div>Distance to hole: <span id="distance">420</span> yards</div>
+        </div>
+
+        <div class="controls">
+          <label for="club">Choose your club</label>
+          <select id="club">
+            <option value="driver">Driver — 230yd</option>
+            <option value="3wood">3-Wood — 210yd</option>
+            <option value="5iron">5-Iron — 160yd</option>
+            <option value="9iron">9-Iron — 110yd</option>
+            <option value="pw">Pitching Wedge — 90yd</option>
+            <option value="sw">Sand Wedge — 60yd</option>
+            <option value="putter">Putter — 8-20yd</option>
+          </select>
+
+          <label for="power">Power (<span id="powerPct">75</span>%)</label>
+          <input id="power" type="range" min="10" max="100" value="75">
+
+          <label for="wind">Wind (yards effect)</label>
+          <input id="wind" type="range" min="-30" max="30" value="0">
+
+          <button id="swingBtn" class="swing">Swing</button>
+          <div class="footer-actions">
+            <button id="nextHole" style="background:#0074d9;color:#fff;border:none;padding:8px 10px;border-radius:6px">Next Hole</button>
+            <button id="restart" style="background:#666;color:#fff;border:none;padding:8px 10px;border-radius:6px">Restart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="log" id="log">Welcome to the Par Challenge! Choose a club, set power and wind, then swing. Try to beat par — birdies and eagles earn bragging rights.</div>
+
+      <div class="status">Tip: Use driver off the tee, wedges for short approach shots, and the putter when on the green. Expect occasional "shot shaping" and "fat shots" — it's golf!</div>
+
+      <div class="scorecard" id="scorecard"></div>
+    </main>
+  </div>
+
+  <script>
+    // Simple Par Challenge simulation
+    const holes = generateHoles(9);
+    const clubs = {
+      driver: 230, '3wood':210, '5iron':160, '9iron':110, pw:90, sw:60, putter:12
+    };
+    let state = {hole:0, distance: holes[0].distance, strokes:0, total:[]};
+
+    const elems = {
+      holeNum: document.getElementById('holeNum'),
+      holePar: document.getElementById('holePar'),
+      distance: document.getElementById('distance'),
+      log: document.getElementById('log'),
+      club: document.getElementById('club'),
+      power: document.getElementById('power'),
+      powerPct: document.getElementById('powerPct'),
+      wind: document.getElementById('wind'),
+      swingBtn: document.getElementById('swingBtn'),
+      nextHole: document.getElementById('nextHole'),
+      restart: document.getElementById('restart'),
+      scorecard: document.getElementById('scorecard')
+    };
+
+    elems.power.addEventListener('input', ()=>{ elems.powerPct.textContent = elems.power.value });
+    elems.swingBtn.addEventListener('click', doSwing);
+    elems.nextHole.addEventListener('click', nextHole);
+    elems.restart.addEventListener('click', resetGame);
+
+    render();
+
+    function generateHoles(n){
+      // mix of par 3/4/5 with random distances
+      const h = [];
+      for(let i=0;i<n;i++){
+        const par = randChoice([3,4,4,5,3,4]);
+        let dist = par===3? randBetween(90,220) : par===4? randBetween(300,470) : randBetween(480,620);
+        h.push({par, distance: Math.round(dist)});
+      }
+      return h;
+    }
+
+    function render(){
+      const cur = holes[state.hole];
+      elems.holeNum.textContent = state.hole+1;
+      elems.holePar.textContent = cur.par;
+      elems.distance.textContent = state.distance;
+      renderScorecard();
+    }
+
+    function renderScorecard(){
+      elems.scorecard.innerHTML = '';
+      state.total.forEach((s,i)=>{
+        const d = document.createElement('div'); d.className='hole'; d.innerHTML = `<div>Hole ${i+1}</div><div>Par ${s.par}</div><div><strong>${s.strokes}</strong> strokes</div>`;
+        elems.scorecard.appendChild(d);
+      });
+    }
+
+    function doSwing(){
+      const club = elems.club.value;
+      const base = clubs[club];
+      const power = Number(elems.power.value)/100;
+      const wind = Number(elems.wind.value);
+      const curDist = state.distance;
+
+      // Determine effective club distance: putter has shorter variable range
+      let intended = base * power;
+      if(club==='putter') intended = randBetween(8,20) * (power/1.2);
+
+      // Randomness to simulate fat/miss/solid hit and shot shaping
+      const randomness = randBetween(80,120)/100; // 0.8 - 1.2
+      // mishits: 8% chance of fat or thin -> reduce by 30-50%
+      const mishitRoll = Math.random();
+      let mishit = '';
+      if(mishitRoll < 0.04){ intended *= randBetween(45,65)/100; mishit='Fat shot'; }
+      else if(mishitRoll < 0.08){ intended *= randBetween(65,85)/100; mishit='Thin shot'; }
+
+      // wind effect: positive wind pushes the ball further toward hole if tailwind (positive), negative reduces
+      const windEffect = wind * (Math.random()*0.6 + 0.4);
+
+      const shotDistance = Math.max(1, Math.round(intended * randomness + windEffect));
+      state.strokes += 1;
+
+      let msg = `You hit a ${club.replace(/([A-Z])/g, ' $1').toUpperCase()} for ${shotDistance} yd.`;
+      if(mishit) msg += ` (${mishit})`;
+      let newDist = Math.max(0, curDist - shotDistance);
+
+      // If within 10 yards and using putter or short club, automatic into hole with some chance
+      if(newDist <= 5 || (newDist <= 20 && club==='putter') || (newDist<=15 && club==='sw' && Math.random()>0.6)){
+        // holed
+        msg += `
+        — You sank it! Finished the hole in ${state.strokes} strokes.`;
+        const cur = holes[state.hole];
+        state.total.push({par: cur.par, strokes: state.strokes});
+        // prepare for next hole
+        state.hole += 1;
+        if(state.hole >= holes.length){
+          // game over
+          showFinal();
+          return;
+        } else {
+          state.distance = holes[state.hole].distance;
+          state.strokes = 0;
+          elems.log.textContent = cleanMsg(msg);
+          render();
+          return;
+        }
+      }
+
+      // otherwise update distance and continue
+      state.distance = newDist;
+      elems.log.textContent = cleanMsg(msg + ` Distance to hole: ${state.distance} yd.`);
+      render();
+    }
+
+    function nextHole(){
+      // skip to next hole (record as ICE) - user choice
+      const cur = holes[state.hole];
+      state.total.push({par: cur.par, strokes: state.strokes || cur.par+2});
+      state.hole += 1;
+      if(state.hole >= holes.length){ showFinal(); return; }
+      state.distance = holes[state.hole].distance; state.strokes = 0; render(); elems.log.textContent='Moved to next hole.';
+    }
+
+    function showFinal(){
+      // display final scorecard and message
+      let totalPar = 0, totalStrokes = 0;
+      state.total.forEach(s=>{ totalPar += s.par; totalStrokes += s.strokes; });
+      const diff = totalStrokes - totalPar;
+      const trophy = diff < 0 ? '⛳ Nice under par!' : diff===0 ? '✅ You parred the course!' : '🤔 Room to improve — keep practicing!';
+      elems.log.innerHTML = `Round complete — ${totalStrokes} strokes (Par ${totalPar})<br>${trophy}`;
+      renderScorecard();
+      // reset for replay
+      state = {hole:0,distance:holes[0].distance,strokes:0,total:[]};
+    }
+
+    function resetGame(){ holes.splice(0); // regenerate
+      // regenerate holes and reset state
+      const newHoles = generateHoles(9);
+      for(let i=0;i<newHoles.length;i++) holes.push(newHoles[i]);
+      state = {hole:0,distance:holes[0].distance,strokes:0,total:[]};
+      elems.log.textContent = 'Game reset. Good luck — may your drives be true!';
+      render();
+    }
+
+    // helpers
+    function randBetween(a,b){ return Math.floor(Math.random()*(b-a+1))+a }
+    function randChoice(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+    function cleanMsg(s){ return s.replace(/\s+/g,' ').trim() }
+
+  </script>
+</body>
+</html>
